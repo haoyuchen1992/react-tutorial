@@ -135,6 +135,7 @@ ul {
 .chat-thread .self-chat:before {
   right: -80px;
   background-size:cover;
+  background-image: attr(profile-img-url);
 }
 
 .chat-thread .self-chat:after {
@@ -154,6 +155,7 @@ ul {
 .chat-thread .others-chat:before {
   left: -80px;
   background-size:cover;
+  background-image: attr(profile-img-url);
 }
 
 .chat-thread .others-chat:after {

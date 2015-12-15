@@ -1,17 +1,23 @@
 [
     {
-        "userID": 1,
+        "id": 1,
         "name": "Pete Hunt",
-        "body": "Lorem ipsum dolor sit amet, id malorum perpetua has, id eum case appetere."
+        "body": "Lorem ipsum dolor sit amet, id malorum perpetua has, id eum case appetere.",
+        "avatarURL": "https://avatars0.githubusercontent.com/u/5420789?v=3&s=460",
+        "selfChat": false
     },
     {
-        "userID": 2,
+        "id": 2,
         "name": "Haoyu Hunt",
-        "body": "Tantas vituperata et pri, eu appareat inimicus eam"
+        "body": "Tantas vituperata et pri, eu appareat inimicus eam",
+        "avatarURL": "https://avatars0.githubusercontent.com/u/5420789?v=3&s=460",
+        "selfChat": false
     },
     {
-        "userID": 3,
+        "id": 3,
         "name": "Chen Hunt",
-        "body": "ius audiam voluptaria qualisque. Sed no feugait accusam. Et sed nostrud invidunt, duo tractatos deterruisset ei, nam in voluptua invenire"
+        "body": "ius audiam voluptaria qualisque. Sed no feugait accusam. Et sed nostrud invidunt, duo tractatos deterruisset ei, nam in voluptua invenire",
+        "avatarURL": "https://avatars0.githubusercontent.com/u/5420789?v=3&s=460",
+        "selfChat": true
     }      
 ]

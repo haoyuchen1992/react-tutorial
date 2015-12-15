@@ -37,41 +37,28 @@ var OnlineUserList = React.createClass({
 });
 
 
-// var ChatRecord = React.createClass({
-//   render: function() {
-//     return (
-//       <div className="comment">
-//         <h2 className="commentAuthor">
-//           {this.props.name}
-//         </h2>
-//         <span dangerouslySetInnerHTML={this.rawMarkup()} />
-//       </div>
-//     );
-//   }
-// });
-
-var ChatRecords = React.createClass({
+var ChatRecord = React.createClass({
   render: function() {
-    var divStyle = {
-        backgroundImage: 'url(' + imgUrl + ')',
-    }
     return (
-      <ul className="chat-thread">
-        {  this.props.selfChat && <li className="self-chat" style = {divStyle}>Are we meeting today?</li>}
-        { !this.props.selfChat && <li className="others-chat" style = {divStyle} >yes, what time suits you? </li>}
-      </ul>
+      <li className = {this.props.data.selfChat ? "self-chat" : "others-chat"} 
+          profile-img-url = {"url:(" + this.props.data.avatarURL + ")"} >
+              {this.props.data.body}
+      </li>
     );
-}  
+  }  
+});
 
 var ChatRecordsList = React.createClass({
   render: function() {
-    var divStyle = {
-        backgroundImage: 'url(' + imgUrl + ')',
-    }
+    var chatRecordsNodes = this.props.data.map(function(record) {
+      return (
+          <ChatRecord data={record} key={record.id} />
+      );
+    });
+
     return (
       <ul className="chat-thread">
-        <li className="self-chat">Are we meeting today?</li>
-        <li className="others-chat">yes, what time suits you?</li>
+          {chatRecordsNodes}
       </ul>
     );
   }  
@@ -122,6 +109,19 @@ var CommentBox = React.createClass({
       }.bind(this)
     });
   },
+  loadChatRecordsFromServer: function () {
+    $.ajax({
+      url: '/api/chatrecords',
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({chatRecordsData: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error('/api/chatrecords', status, err.toString());
+      }.bind(this)
+    });
+  },  
   handleCommentSubmit: function(comment) {
     var comments = this.state.data;
     // Optimistically set an id on the new comment. It will be replaced by an
@@ -145,21 +145,20 @@ var CommentBox = React.createClass({
     });
   },
   getInitialState: function() {
-    return {data: [], onlineUsersData: []};
+    return {data: [], onlineUsersData: [], chatRecordsData: []};
   },
   componentDidMount: function() {
     this.loadCommentsFromServer();
     this.loadUsersFromServer();
+    this.loadChatRecordsFromServer();
     setInterval(this.loadCommentsFromServer, this.props.pollInterval);
     setInterval(this.loadUsersFromServer, this.props.pollInterval);
   },
   render: function() {
-    console.log(this.state.onlineUsersData);
-    console.log(this.state.data);
     return (
       <div className="commentBox">
         <OnlineUserList data={this.state.onlineUsersData} />
-        <ChatRecordsList />
+        <ChatRecordsList data={this.state.chatRecordsData} />
         <h1>Comments</h1>
         <CommentList data={this.state.data} />
         <CommentForm onCommentSubmit={this.handleCommentSubmit} />
