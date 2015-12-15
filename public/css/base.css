@@ -60,3 +60,189 @@ p, ul {
 ul {
   padding-left: 30px;
 }
+
+
+.online-user-list {
+  border: 1px solid #c7b89e;
+}
+.avatar-chat {
+  border: 2px solid #c7b89e;
+  display: inline-block;
+}
+
+.avatar-chat,
+.avatar-chat img {
+  width: 30px;
+  height: 30px;
+  -webkit-border-radius: 30px;
+  /* Saf3+, Chrome */
+  border-radius: 30px;
+  /* Opera 10.5, IE 9 */
+  /*-moz-border-radius: 30px;  Disabled for FF1+ */
+}
+
+
+/* Chat Records*/
+
+.chat-thread {
+  margin: 24px auto 0 auto;
+  padding: 0 20px 0 0;
+  list-style: none;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.chat-thread li {
+  position: relative;
+  clear: both;
+  display: inline-block;
+  padding: 16px 40px 16px 20px;
+  margin: 0 0 20px 0;
+  font: 16px/20px 'Noto Sans', sans-serif;
+  border-radius: 10px;
+  background-color: rgba(25,147,147,0.2);
+}
+
+/* Chat - Avatar */
+.chat-thread li:before {
+  position: absolute;
+  top: 0;
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+  content: '';
+}
+
+/* Chat - Speech Bubble Arrow */
+.chat-thread li:after {
+  position: absolute;
+  top: 15px;
+  content: '';
+  width: 0;
+  height: 0;
+  border-top: 15px solid rgba(25,147,147,0.2);
+}
+
+.chat-thread .self-chat {
+  animation: show-chat-odd 0.15s 1 ease-in;
+  -moz-animation: show-chat-odd 0.15s 1 ease-in;
+  -webkit-animation: show-chat-odd 0.15s 1 ease-in;
+  float: right;
+  margin-right: 80px;
+  color: #0AD5C1;
+}
+
+.chat-thread .self-chat:before {
+  right: -80px;
+  background-size:cover;
+}
+
+.chat-thread .self-chat:after {
+  border-right: 15px solid transparent;
+  right: -15px;
+}
+
+.chat-thread .others-chat {
+  animation: show-chat-even 0.15s 1 ease-in;
+  -moz-animation: show-chat-even 0.15s 1 ease-in;
+  -webkit-animation: show-chat-even 0.15s 1 ease-in;
+  float: left;
+  margin-left: 80px;
+  color: #0EC879;
+}
+
+.chat-thread .others-chat:before {
+  left: -80px;
+  background-size:cover;
+}
+
+.chat-thread .others-chat:after {
+  border-left: 15px solid transparent;
+  left: -15px;
+}
+
+
+
+// A tiny bit responsive...
+// --------------------------------------
+/* Small screens */
+@media all and (max-width: 767px) {
+  .chat-thread {
+    width: 90%;
+    height: 260px;
+  }
+
+  .chat-window {
+    left: 5%;
+    width: 90%;
+  }
+}
+
+/* Medium and large screens */
+@media all and (min-width: 768px) {
+  .chat-thread {
+    width: 50%;
+    height: 320px;
+  }
+
+  .chat-window {
+    left: 25%;
+    width: 50%;
+  }
+}
+
+// Animation
+// --------------------------------------
+@keyframes show-chat-even {
+  0% {
+    margin-left: -480px;
+  }
+  100% {
+    margin-left: 0;
+  }
+}
+
+@-moz-keyframes show-chat-even {
+  0% {
+    margin-left: -480px;
+  }
+  100% {
+    margin-left: 0;
+  }
+}
+
+@-webkit-keyframes show-chat-even {
+  0% {
+    margin-left: -480px;
+  }
+  100% {
+    margin-left: 0;
+  }
+}
+
+@keyframes show-chat-odd {
+  0% {
+    margin-right: -480px;
+  }
+  100% {
+    margin-right: 0;
+  }
+}
+
+@-moz-keyframes show-chat-odd {
+  0% {
+    margin-right: -480px;
+  }
+  100% {
+    margin-right: 0;
+  }
+}
+
+@-webkit-keyframes show-chat-odd {
+  0% {
+    margin-right: -480px;
+  }
+  100% {
+    margin-right: 0;
+  }
+}

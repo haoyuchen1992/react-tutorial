@@ -10,6 +10,73 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+
+var OnlineUserAvatar = React.createClass({
+  render: function() {
+    return (
+      <div className="avatar-chat">
+        <img src={this.props.avatarURL} /> 
+      </div>
+    );
+  }
+});
+
+var OnlineUserList = React.createClass({
+  render: function() {
+    var onlineUserListNode = this.props.data.map(function(user) {
+      return (
+        <OnlineUserAvatar avatarURL={user.avatarURL} key={user.id} />
+      );
+    });
+    return (
+      <div className="online-user-list">
+        {onlineUserListNode}
+      </div>
+    );
+  }  
+});
+
+
+// var ChatRecord = React.createClass({
+//   render: function() {
+//     return (
+//       <div className="comment">
+//         <h2 className="commentAuthor">
+//           {this.props.name}
+//         </h2>
+//         <span dangerouslySetInnerHTML={this.rawMarkup()} />
+//       </div>
+//     );
+//   }
+// });
+
+var ChatRecords = React.createClass({
+  render: function() {
+    var divStyle = {
+        backgroundImage: 'url(' + imgUrl + ')',
+    }
+    return (
+      <ul className="chat-thread">
+        {  this.props.selfChat && <li className="self-chat" style = {divStyle}>Are we meeting today?</li>}
+        { !this.props.selfChat && <li className="others-chat" style = {divStyle} >yes, what time suits you? </li>}
+      </ul>
+    );
+}  
+
+var ChatRecordsList = React.createClass({
+  render: function() {
+    var divStyle = {
+        backgroundImage: 'url(' + imgUrl + ')',
+    }
+    return (
+      <ul className="chat-thread">
+        <li className="self-chat">Are we meeting today?</li>
+        <li className="others-chat">yes, what time suits you?</li>
+      </ul>
+    );
+  }  
+});
+
 var Comment = React.createClass({
   rawMarkup: function() {
     var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
@@ -42,6 +109,19 @@ var CommentBox = React.createClass({
       }.bind(this)
     });
   },
+  loadUsersFromServer: function () {
+    $.ajax({
+      url: '/api/users',
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({onlineUsersData: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error('/api/users', status, err.toString());
+      }.bind(this)
+    });
+  },
   handleCommentSubmit: function(comment) {
     var comments = this.state.data;
     // Optimistically set an id on the new comment. It will be replaced by an
@@ -65,15 +145,21 @@ var CommentBox = React.createClass({
     });
   },
   getInitialState: function() {
-    return {data: []};
+    return {data: [], onlineUsersData: []};
   },
   componentDidMount: function() {
     this.loadCommentsFromServer();
+    this.loadUsersFromServer();
     setInterval(this.loadCommentsFromServer, this.props.pollInterval);
+    setInterval(this.loadUsersFromServer, this.props.pollInterval);
   },
   render: function() {
+    console.log(this.state.onlineUsersData);
+    console.log(this.state.data);
     return (
       <div className="commentBox">
+        <OnlineUserList data={this.state.onlineUsersData} />
+        <ChatRecordsList />
         <h1>Comments</h1>
         <CommentList data={this.state.data} />
         <CommentForm onCommentSubmit={this.handleCommentSubmit} />
